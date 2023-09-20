@@ -2,8 +2,9 @@
   "name": "expressjs-jwt-auth",
   "version": "1.0.0",
   "description": "Boilerplate of authentication using express.js and jwt",
-  "main": "server.js",
+  "main": "src/server.js",
   "scripts": {
+    "dev": "nodemon src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -27,5 +28,9 @@
   "dependencies": {
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "dotenv": "^16.3.1",
+    "nodemon": "^3.0.1"
   }
 }
