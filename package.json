@@ -1,0 +1,31 @@
+{
+  "name": "expressjs-jwt-auth",
+  "version": "1.0.0",
+  "description": "Boilerplate of authentication using express.js and jwt",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kollol-dev/expressjs-jwt-auth.git"
+  },
+  "keywords": [
+    "nodejs",
+    "expressjs",
+    "auth",
+    "authentication",
+    "jwt",
+    "jsonwebtoken"
+  ],
+  "author": "Kollol Chakraborty",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kollol-dev/expressjs-jwt-auth/issues"
+  },
+  "homepage": "https://github.com/kollol-dev/expressjs-jwt-auth#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2"
+  }
+}
