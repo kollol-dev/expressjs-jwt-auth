@@ -1,1 +1,1 @@
-# Authencion Backend using Express.js and JWT
+# Authentication Backend using Express.js and JWT
