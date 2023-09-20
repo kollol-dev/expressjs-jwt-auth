@@ -1,13 +1,16 @@
 require("dotenv").config({ path: `${__dirname}/../.env` });
 const express = require('express')
-const app = express()
+const server = express()
 const port = process.env.PORT || 3000;
 
-console.log(process.env.PORT)
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
+const routes = require('./routes')
 
-app.listen(port, () => {
+server.get("/health", (req, res) => {
+  res.send("Healthy!");
+});
+
+server.use('/', routes)
+
+server.listen(port, () => {
   console.log(`Example app listening on port ${port}`)
 })
