@@ -1,4 +1,3 @@
 module.exports = {
-    signUp: async (req, res) => {
-    }
+  signUp: async (req, res) => {},
 };
