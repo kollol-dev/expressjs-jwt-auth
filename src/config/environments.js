@@ -6,6 +6,11 @@ module.exports = {
     database: process.env.DATABASE,
   },
 
+  jwt: {
+    secret: process.env.JWT_SECRET,
+    expiresIn: process.env.JWT_EXPIRES_IN || 86400 // 24 hours
+  },
+
   mongo: {
     host: process.env.MONGO_HOST || "localhost",
     database: process.env.MONGO_DATABASE,
