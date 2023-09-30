@@ -4,6 +4,10 @@ const UserModel = require("./users.model");
 const { jwt: { secret: jwtSecret, expiresIn: jwtExpiresIn } } = require("../config/environments")
 
 module.exports = {
+    getUser: ({ _id, email }) =>{
+        return User_model.findOne({ _id, email }).exec();
+    },
+
     getUserByEmail({ email }) {
         return UserModel.findOne({ email }).exec();
     },

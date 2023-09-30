@@ -1,4 +1,4 @@
-const { getUserByEmail, createUser, createSecret, createRefreshToken, comparePassword } = require("./users.service")
+const { getUser, getUserByEmail, createUser, createSecret, createRefreshToken, comparePassword, verifyToken } = require("./users.service")
 const { signUpValidator, loginValidator } = require('./users.validator')
 const formatErrors = require('../helpers/formatError')
 const hashPassword = require('../helpers/hashPassword')
@@ -32,7 +32,7 @@ module.exports = {
           message: "Something went wrong!",
         });
 
-      const [token, refreshToken] = await Promise.all([
+      const [accessToken, refreshToken] = await Promise.all([
         createSecret(user),
         createRefreshToken(user)
       ])
@@ -41,7 +41,7 @@ module.exports = {
         .cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'strict' })
         .status(201).json({
           user: omitFieldsFromObject(user.toJSON(), hiddenFields),
-          secret: token,
+          accessToken,
           refreshToken,
           message: "Signup successful",
         });
@@ -78,7 +78,7 @@ module.exports = {
         });
       }
 
-      const [token, refreshToken] = await Promise.all([
+      const [accessToken, refreshToken] = await Promise.all([
         createSecret(user),
         createRefreshToken(user)
       ])
@@ -87,7 +87,7 @@ module.exports = {
         .cookie('refreshToken', refreshToken, { httpOnly: true, sameSite: 'strict' })
         .status(201).json({
           user: omitFieldsFromObject(user.toJSON(), hiddenFields),
-          secret: token,
+          accessToken,
           refreshToken,
           message: "Login successful",
         });
@@ -97,6 +97,39 @@ module.exports = {
       return res.status(400).json({
         message: "Something went wrong!",
       });
+    }
+  },
+
+  refreshToken: async (req, res) => {
+    const refresh_token = req.body.refresh_token || false;
+    if (!refresh_token) {
+      return res.status(401).json({ message: 'Access Denied. No refresh token provided.' });
+    }
+
+    try {
+      const decoded = verifyToken({ token: refresh_token });
+      const accessToken = await createSecret({ ...decoded })
+
+      return res.header('Authorization', accessToken).json({ user: decoded, accessToken });
+    } catch (error) {
+      console.log(error);
+      return res.status(400).json({ message: 'Invalid refresh token.' });
+    }
+  },
+
+  getAuthUser: async (req, res) => {
+    const { _id = null, email = null } = req.user;
+    try {
+      const user = await getUser({ _id, email })
+      if (!user) {
+        return res.status(401).json({
+          message: "Unknown credentials or Unauthenticated"
+        });
+      }
+      return res.json({ user });
+    } catch (error) {
+      console.error(error)
+      return res.status(500).json({ message: 'Something went wrong.' });
     }
   }
 };
